@@ -6,10 +6,8 @@ from balance.models import DBManager
 ruta_basedatos = app.config.get("RUTA_BASE_DE_DATOS")
 dbmanager = DBManager(ruta_basedatos)
 
-
 @app.route("/")
 def inicio():
-
 
     movimientos = dbmanager.consultaSQL("SELECT * FROM movimiento order by fecha;")
 
