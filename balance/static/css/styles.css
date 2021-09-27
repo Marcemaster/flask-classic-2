@@ -60,6 +60,6 @@ footer *{
 .error {
     background-color: #ffaaaa;
     color: darkred;
-    font-size: 2rem;
+    font-size: 1rem;
     font-weight: bold;
 }

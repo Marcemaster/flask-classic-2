@@ -9,11 +9,11 @@ class DBManager():
         conexion = sqlite3.connect(self.ruta_basedatos)
         cur = conexion.cursor()
         cur.execute(consulta)
-        
+
         keys = []
         for item in cur.description:
             keys.append(item[0])
-        
+
         registros = []
         for registro in cur.fetchall():
             ix_clave = 0
@@ -25,3 +25,12 @@ class DBManager():
 
         conexion.close()
         return registros
+
+
+    def modificaSQL(self, consulta, params):
+        conexion = sqlite3.connect(self.ruta_basedatos)
+
+        cur = conexion.cursor()
+        cur.execute(consulta, params)
+        conexion.commit()
+        conexion.close()

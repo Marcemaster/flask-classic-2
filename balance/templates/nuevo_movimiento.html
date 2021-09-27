@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block titulo_pagina %} Nuevo movimiento {% endblock %}
+{% block contenido_pagina %}
+            <h1>Alta de movimiento</h1>
+            {% for error in errores %}
+                <p class="error">{{ error }}</p>
+            {% endfor %}
+
+            <form action="/nuevo" method="post">
+
+                {{ el_formulario.hidden_tag() }}
+                <div class="campo-formulario">
+                    {{ el_formulario.fecha.label()}}
+                    {{ el_formulario.fecha() }}
+
+                    {% for error in el_formulario.fecha.errors %}
+                    <p class="error">{{ error }}</p>
+                    {% endfor %}
+                </div>
+                <div class="campo-formulario">
+                    {{ el_formulario.concepto.label() }}
+                    {{ el_formulario.concepto }}
+
+                    {% for error in el_formulario.concepto.errors %}
+                    <p class="error">{{ error }}</p>
+                    {% endfor %}
+                </div>
+                <div class="campo-formulario">
+                    {% for subfield in el_formulario.ingreso_gasto %}
+                        {{ subfield }} {{ subfield.label }}
+                    {% endfor %}
+
+                    {% for error in el_formulario.ingreso_gasto.errors %}
+                    <p class="error">{{ error }}</p>
+                    {% endfor %}
+                </div>
+                <div class="campo-formulario">
+                    {{ el_formulario.cantidad.label()}}
+                    {{ el_formulario.cantidad() }}
+
+                    {% for error in el_formulario.cantidad.errors %}
+                    <p class="error">{{ error }}</p>
+                    {% endfor %}
+                </div>
+
+                {{ el_formulario.submit() }}
+ 
+            </form>
+
+{% endblock%}
