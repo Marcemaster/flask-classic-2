@@ -5,10 +5,11 @@ class DBManager():
     def __init__(self, ruta_basedatos):
         self.ruta_basedatos = ruta_basedatos
 
-    def consultaSQL(self, consulta):
+    def consultaSQL(self, consulta, params = []):
         conexion = sqlite3.connect(self.ruta_basedatos)
+        
         cur = conexion.cursor()
-        cur.execute(consulta)
+        cur.execute(consulta, params)
 
         keys = []
         for item in cur.description:

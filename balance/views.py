@@ -2,6 +2,7 @@ from . import app
 from flask import render_template, request, redirect, url_for, flash
 from balance.models import DBManager
 from balance.forms import MovimientoFormulario
+from datetime import date
 
 
 
@@ -11,7 +12,10 @@ dbmanager = DBManager(ruta_basedatos)
 @app.route("/")
 def inicio():
 
-    movimientos = dbmanager.consultaSQL("SELECT * FROM movimiento order by fecha;")
+    consulta = '''SELECT *
+                 FROM movimiento 
+                ORDER BY fecha;'''
+    movimientos = dbmanager.consultaSQL(consulta)
     return render_template("inicio.html", items=movimientos)
 
 @app.route("/nuevo", methods=["GET", "POST"])
@@ -50,5 +54,25 @@ def nuevo():
         '''
 
 @app.route("/borrar/<int:id>", methods=["GET", "POST"])
-def borrar(id=None):
-    return f"Página de borrado de {id}"
+def borrar(id):
+    if request.method == "GET":
+        consulta = '''
+            SELECT id, fecha, concepto, ingreso_gasto, cantidad
+              FROM movimiento
+            WHERE id = ?;
+        '''
+
+        movimientos = DBManager.consultaSQL(consulta, [id])
+        if len(movimientos) == 0:
+            flash(f"Movimiento {id} no encontrado")
+            return redirect(url_for("inicio"))
+
+        el_movimiento = movimientos[0]
+        el_movimiento["fecha"] = date.fromisoformat(el_movimiento["fecha"])
+        formulario = MovimientoFormulario(data=el_movimiento)
+
+        return render_template("borrar_movimiento.html", el_formulario=formulario)
+    else:
+        #TRABAJO PENDIENTE ( SI EL RESULTADO ES POST CONSTRUIR LA CONSULTA CON UN DELETE ) Lo mismo que va de la linea 31 a la 45 pero en lugar de delete con insert y la validación es opcional
+    
+    return "Hola"
